@@ -1,6 +1,6 @@
 import pytest
 from django.test import TestCase
-from task.models import Task
+from task.models import Task, Category
 from family_member.models import FamilyMember
 from datetime import date
 import datetime
@@ -15,9 +15,13 @@ class TaskModelTest(TestCase):
             ongoing_tasks = 2,
             closed_tasks = 10
             )
+        category = Category.objects.create(
+            name = 'Test category 1',
+        )
         task = Task.objects.create(
             title = 'Test task',
             creator = family_member,
+            category = category,
             end_date = date.today(),
             description = 'This is a test task description',
             star_points = 0,
@@ -77,5 +81,25 @@ class TaskModelTest(TestCase):
         """
         task = Task.objects.first()
         assert task.assigned.name == 'Emil'
+    
+    def test_task_category(self):
+        task = Task.objects.first()
+        assert task.category.name == 'Test category 1'
 
     
+class TaskModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        category = Category.objects.create(
+            name = 'Test category 2',
+        )
+
+    def test_category_name(self):
+        """
+        Tests that the category name is as expected
+        """
+        category = Category.objects.first()
+        assert category.name == 'Test category 2'
+
+    def test_category_icon_default(self):
+        pass
