@@ -26,6 +26,9 @@ class FamilyMember(models.Model):
     ongoing_tasks = models.IntegerField(default="0")
     closed_tasks = models.IntegerField(default="0")
 
+    class Meta:
+         verbose_name_plural = "family members"
+
     def __str__(self):
         return f"{self.name}"
 
