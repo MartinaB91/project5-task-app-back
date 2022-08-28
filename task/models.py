@@ -1,5 +1,15 @@
 from django.db import models
 from family_member.models import FamilyMember
+from cloudinary.models import CloudinaryField
+
+
+
+class Category(models.Model):
+    """
+    All tasks belongs to a category
+    """
+    name = models.CharField(max_length=50,  unique=True, blank=False)
+    icon = CloudinaryField("category_icon", default="default_image")
 
 
 class Task(models.Model):
@@ -12,11 +22,13 @@ class Task(models.Model):
             on_delete=models.CASCADE,
             related_name="task_creator",
         )
-    # category = models.ForeignKey(
-    #         Category,
-    #         on_delete=models.CASCADE,
-    #         related_name="task_category",
-    #     )
+    category = models.ForeignKey(
+            Category,
+            on_delete=models.CASCADE,
+            related_name="task_category",
+            null=False,
+            default=None
+        )
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     end_date = models.DateField(blank=True, null=True)
