@@ -3,7 +3,6 @@ from family_member.models import FamilyMember
 from cloudinary.models import CloudinaryField
 
 
-
 class Category(models.Model):
     """
     All tasks belongs to a category
