@@ -14,8 +14,10 @@ class Profile(models.Model):
     family_members = models.ForeignKey(
         FamilyMember,
         on_delete=models.CASCADE,
-        null=True
+        null=True,
+        blank=True
         )
+
 
     def __str__(self):
         return f"{self.user}"
