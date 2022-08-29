@@ -11,6 +11,9 @@ class Category(models.Model):
     name = models.CharField(max_length=50,  unique=True, blank=False)
     icon = CloudinaryField("category_icon", default="default_image")
 
+    def __str__(self):
+        return f"{self.name}"
+
 
 class Task(models.Model):
     """
@@ -40,4 +43,7 @@ class Task(models.Model):
             related_name="assigned_family_member",
             null=True,
         )
+    
+    def __str__(self):
+        return f"{self.title}"
 
