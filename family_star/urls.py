@@ -20,3 +20,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('profile/', include('profiles.urls'))
 ]
+
+admin.site.site_header = "Family Star Administration"
+admin.site.site_title = "Family Star Administration"
+admin.site.index_title = "Welcome to Family Star Administration"
