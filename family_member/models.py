@@ -19,7 +19,7 @@ class FamilyMember(models.Model):
         # TODO: Check if two different profiles can have a family member with the same name (want that to be possible)
     family_member_img = CloudinaryField(
         "family_member_image", 
-        default="default_image"
+        default="default_image",
         )
     role = models.IntegerField(choices=ROLE_PRIVILEGE, default=0)
     star_points = models.IntegerField(default="0")
