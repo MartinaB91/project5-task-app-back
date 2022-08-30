@@ -8,9 +8,11 @@
 - [Pytest (7.1.2)](https://pypi.org/project/pytest/) and [Pytest-django (4.5.2)](https://pytest-django.readthedocs.io/en/latest/) - Used for testing Python
 ### Databases
 - [SQLite](https://www.sqlite.org/index.html) - Used as development database 
+- [PostgreSQL](https://www.postgresql.org/) - Used as production database
 ### Storage
 - [Cloudinary](https://cloudinary.com/) - Used for storing pictures
 ### Other tools
+- [Gunicorn (20.1.0)](https://gunicorn.org/)
 ## Design 
 ### Database Scheme
 ## Future improvements
