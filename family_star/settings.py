@@ -47,13 +47,10 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = DEVELOPMENT
 
-
-# development: localhost deployed: heroku
-if DEVELOPMENT:
-    ALLOWED_HOSTS = ['localhost']
-else:
-    ALLOWED_HOSTS = [os.environ.get('HEROKU_HOSTNAME')]
-
+ALLOWED_HOSTS = [
+    'https://project5-task-app-back.herokuapp.com/',
+    'localhost',
+]
 
 # Application definition
 
