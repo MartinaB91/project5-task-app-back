@@ -50,9 +50,9 @@ DEBUG = DEVELOPMENT
 
 # development: localhost deployed: heroku
 if DEVELOPMENT:
-    ALLOWED_HOSTS = ['localhost']
+    ALLOWED_HOSTS = ['localhost', os.environ.get('HEROKU_HOSTNAME')]
 else:
-    ALLOWED_HOSTS = [os.environ.get('HEROKU_HOSTNAME')]
+    ALLOWED_HOSTS = ['localhost', os.environ.get('HEROKU_HOSTNAME')]
 
 
 # Application definition
