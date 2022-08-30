@@ -48,11 +48,11 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = DEVELOPMENT
 
 
-# development: localhost deployed: heroku
-if DEVELOPMENT:
-    ALLOWED_HOSTS = ['localhost', os.environ.get('HEROKU_HOSTNAME')]
-else:
-    ALLOWED_HOSTS = ['localhost', os.environ.get('HEROKU_HOSTNAME')]
+# TODO: check if this needs fixing
+# if DEVELOPMENT:
+#     ALLOWED_HOSTS = ['localhost', os.environ.get('HEROKU_HOSTNAME')]
+# else:
+ALLOWED_HOSTS = ['localhost', os.environ.get('HEROKU_HOSTNAME')]
 
 
 # Application definition
