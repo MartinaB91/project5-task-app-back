@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     'profiles',
     'family_member',
     'task',
+    'categories',
 
 ]
 
