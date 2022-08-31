@@ -2,6 +2,7 @@ import pytest
 from django.test import TestCase
 from task.models import Task
 from family_member.models import FamilyMember
+from categories.models import Category
 from datetime import date
 import datetime
 
