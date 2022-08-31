@@ -31,7 +31,7 @@ class Task(models.Model):
             related_name="assigned_family_member",
             null=True,
         )
-    
+
     def __str__(self):
         return f"{self.title}"
 
