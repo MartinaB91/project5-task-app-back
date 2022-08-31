@@ -1,17 +1,6 @@
 from django.db import models
 from family_member.models import FamilyMember
-from cloudinary.models import CloudinaryField
-
-
-class Category(models.Model):
-    """
-    All tasks belongs to a category
-    """
-    name = models.CharField(max_length=50,  unique=True, blank=False)
-    icon = CloudinaryField("category_icon", default="default_image")
-
-    def __str__(self):
-        return f"{self.name}"
+from categories.models import Category
 
 
 class Task(models.Model):
