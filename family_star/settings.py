@@ -19,7 +19,8 @@ import dj_database_url
 if os.path.exists('env.py'):
     import env
 
-DEVELOPMENT = os.environ.get('DEVELOPMENT')
+# DEVELOPMENT = os.environ.get('DEVELOPMENT')
+DEVELOPMENT = False
 
 CLOUDINARY_STORAGE = {
     'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL')
