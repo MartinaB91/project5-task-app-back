@@ -12,8 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
-import dj_database_url
 import re
+import dj_database_url
 
 
 if os.path.exists('env.py'):
@@ -66,12 +66,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cloudinary',
     'rest_framework',
-    'rest_framework.authtoken', 
+    'rest_framework.authtoken',
     'dj_rest_auth',
-    'django.contrib.sites', 
-    'allauth', 
-    'allauth.account', 
-    'allauth.socialaccount', 
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'dj_rest_auth.registration',
     'corsheaders',
 
@@ -79,7 +79,6 @@ INSTALLED_APPS = [
     'family_member',
     'task',
     'categories',
-
 ]
 
 SITE_ID = 1
@@ -98,7 +97,6 @@ JWT_AUTH_SECURE = True
 JWT_AUTH_COOKIE = 'my-app-auth'
 JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
 JWT_AUTH_SAMESITE = 'None'
-
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
@@ -147,7 +145,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'family_star.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -210,4 +207,3 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
