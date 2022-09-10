@@ -1,5 +1,6 @@
 from django.db import models
 from cloudinary.models import CloudinaryField
+from profiles.models import Profile
 
 
 class FamilyMember(models.Model):
@@ -10,7 +11,12 @@ class FamilyMember(models.Model):
     of scores a family member has been gained by completing tasks.
     """
     ROLE_PRIVILEGE = ((0, "Child"), (1, "Parent"))
-
+    belongs_to_profile = models.ForeignKey(
+        Profile,
+        on_delete=models.CASCADE,
+        default= None,
+        null=False,
+        )
     name = models.CharField(
         max_length=255,
         unique=True,
