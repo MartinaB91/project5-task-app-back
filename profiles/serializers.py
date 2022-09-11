@@ -1,12 +1,21 @@
 from rest_framework import serializers
+from family_member.models import FamilyMember
 from .models import Profile
-from .serializers import FamilyMemberSerializer
 
+
+
+class SimpleFamilyMemberSerializer(serializers.ModelSerializer):
+
+    class Meta: 
+        model = FamilyMember
+        fields = (
+            'name', 'belongs_to_profile',
+            )
 
 class ProfileSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
-    family_members = FamilyMemberSerializer(many=True, read_only=True)
 
     class Meta:
         model = Profile
-        fields = ('user', 'created_at', 'updated_at', 'family_members')
+        fields = ('user', 'created_at', 'updated_at',)
+
