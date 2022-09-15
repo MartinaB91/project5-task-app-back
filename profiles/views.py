@@ -9,10 +9,9 @@ from .models import Profile
 from .serializers import ProfileSerializer
 
 
-
 class ProfileList(APIView):
     """
-    Views all profiles. Only Admin have this premission.
+    Views all profiles. Only Admin have this permission.
     """
     # permission_classes = [permissions.IsAdminUser]
 
@@ -27,6 +26,7 @@ class ProfileDetailList(APIView):
     View one profile by id
     """
     serializer_class = ProfileSerializer
+
 
     def get_object(self, pk):
         try:
