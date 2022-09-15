@@ -7,6 +7,7 @@ from .models import FamilyMember
 from .serializers import FamilyMemberSerializer
 from rest_framework.response import Response
 from family_star.permissions import IsOwnerOrReadOnly
+from .models import Profile
 
 # class FamilyMemberList(generics.ListCreateAPIView):
 #     queryset = FamilyMember.objects.all()
@@ -18,7 +19,8 @@ class FamilyMemberList(APIView):
 
     """
     def get(self, request):
-        family_members = FamilyMember.objects.all()
+        profile = Profile.objects.get(user=request.user)
+        family_members = FamilyMember.objects.filter(belongs_to_profile=profile)
         serializer = FamilyMemberSerializer(family_members, many=True)
         return Response(serializer.data)
     
