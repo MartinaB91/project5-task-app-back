@@ -6,6 +6,7 @@ from rest_framework import generics
 from .models import FamilyMember
 from .serializers import FamilyMemberSerializer
 from rest_framework.response import Response
+from family_star.permissions import IsOwnerOrReadOnly
 
 # class FamilyMemberList(generics.ListCreateAPIView):
 #     queryset = FamilyMember.objects.all()
@@ -16,7 +17,6 @@ class FamilyMemberList(APIView):
     Views all family members
 
     """
-
     def get(self, request):
         family_members = FamilyMember.objects.all()
         serializer = FamilyMemberSerializer(family_members, many=True)
@@ -28,10 +28,12 @@ class familyMemberDetailList(APIView):
     View for displaying and update one family member.  
     """
     serializer_class = FamilyMemberSerializer
+    permission_classes = [IsOwnerOrReadOnly]
 
     def get_object(self, pk):
         try: 
             family_member = FamilyMember.objects.get(pk=pk)
+            self.check_object_permissions(self.request, family_member)
             return family_member
         except FamilyMember.DoesNotExist:
             raise Http404
