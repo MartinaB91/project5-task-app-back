@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import Http404
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework import authentication, permissions
@@ -22,6 +23,9 @@ class ProfileList(APIView):
 
 
 class ProfileDetailList(APIView):
+    """
+    View one profile by id
+    """
     serializer_class = ProfileSerializer
 
     def get_object(self, pk):
@@ -35,4 +39,3 @@ class ProfileDetailList(APIView):
         profile = self.get_object(pk)
         serializer = ProfileSerializer(profile)
         return Response(serializer.data)
-
