@@ -23,10 +23,15 @@ class FamilyMember(models.Model):
         blank=False
         )  
         # TODO: Check if two different profiles can have a family member with the same name (want that to be possible)
-    family_member_img = CloudinaryField(
-        "family_member_img", 
+    # family_member_img = CloudinaryField(
+    #     "family_member_img", 
+    #     default="default_image",
+    #     )
+    family_member_img = models.ImageField(
+        upload_to='images/',
         default="default_image",
-        )
+        blank=True
+    )
     role = models.IntegerField(choices=ROLE_PRIVILEGE, default=0)
     star_points = models.IntegerField(default="0")
     ongoing_tasks = models.IntegerField(default="0")
