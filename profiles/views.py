@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework import authentication, permissions
@@ -23,8 +24,15 @@ class ProfileList(APIView):
 class ProfileDetailList(APIView):
     serializer_class = ProfileSerializer
 
-    def get(self,request):
-        profile = Profile.objects.get()
-        self.check_object_permissions(self.request, profile)
-        return profile
+    def get_object(self, pk):
+        try:
+            profile = Profile.objects.get(pk=pk)
+            return profile
+        except Profile.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        profile = self.get_object(pk)
+        serializer = ProfileSerializer(profile)
+        return Response(serializer.data)
 
