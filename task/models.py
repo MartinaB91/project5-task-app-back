@@ -1,12 +1,19 @@
 from django.db import models
 from family_member.models import FamilyMember
 from categories.models import Category
+from profiles.models import Profile
 
 
 class Task(models.Model):
     """
     Family members are allowed to create a task without a end date
     """
+    belongs_to_profile = models.ForeignKey(
+        Profile,
+        on_delete=models.CASCADE,
+        default= None,
+        null=False,
+        )
     title = models.CharField(max_length=100)
     creator = models.ForeignKey(
             FamilyMember,
