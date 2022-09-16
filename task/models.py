@@ -37,6 +37,7 @@ class Task(models.Model):
             on_delete=models.CASCADE,
             related_name="assigned_family_member",
             null=True,
+            blank=True,
         )
 
     def __str__(self):
