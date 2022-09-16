@@ -9,7 +9,7 @@ class FamilyMemberSerializer(serializers.ModelSerializer):
     belongs_to_profile = serializers.StringRelatedField(source='belongs_to_profile.user.username')
     name = serializers.CharField(max_length=200)
     family_member_img = serializers.ReadOnlyField(source='family_member_img.url')
-    role = serializers.CharField(max_length=1)
+    role = serializers.ChoiceField(choices=FamilyMember.ROLE_PRIVILEGE)
     
     # def create(self, validated_data):
     #     request = self.context.get("request")
