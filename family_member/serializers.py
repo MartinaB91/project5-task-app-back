@@ -10,26 +10,7 @@ class FamilyMemberSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=200)
     family_member_img = serializers.ReadOnlyField(source='family_member_img.url')
     role = serializers.ChoiceField(choices=FamilyMember.ROLE_PRIVILEGE)
-    
-    # def create(self, validated_data):
-    #     request = self.context.get("request")
-    #     profile = Profile.objects.filter(user=request.user).first()  # Name is unique so it is safe to use first() to get instance instead of QuerySet     
-    #     return FamilyMember.objects.create(
-    #         belongs_to_profile=profile,
-    #         name=validated_data['name'],
-    #         family_member_img=validated_data['family_member_img'],
-    #         role=validated_data['role']
-    #     )
 
-    # def get(self,request):
-    #     request = self.context.get("request")
-    #     profile = Profile.objects.filter(user=request.user).first()  # Name is unique so it is safe to use first() to get instance instead of QuerySet     
-    #     familymembers = FamilyMember.objects.filter(belongs_to_profile=profile)
-    #     print("#############################")
-    #     print(profile)
-    #     print("#############################")
-    #     print(profile)
-    #     return familymembers
 
     class Meta: 
         model = FamilyMember
