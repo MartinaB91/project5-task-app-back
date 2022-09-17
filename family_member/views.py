@@ -8,15 +8,14 @@ from rest_framework.response import Response
 from family_star.permissions import IsOwner
 from profiles.models import Profile
 
-# class FamilyMemberList(generics.ListCreateAPIView):
-#     queryset = FamilyMember.objects.all()
-#     serializer_class = FamilyMemberSerializer
 
 class FamilyMemberList(APIView):
     """
     Views all family members
 
     """
+    serialzer_class = FamilyMemberSerializer
+
     def get(self, request):
         profile = Profile.objects.get(user=request.user)
         family_members = FamilyMember.objects.filter(belongs_to_profile=profile)
