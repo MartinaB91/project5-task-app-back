@@ -5,7 +5,7 @@ from rest_framework import status
 from .models import FamilyMember
 from .serializers import FamilyMemberSerializer
 from rest_framework.response import Response
-from family_star.permissions import IsOwnerOrReadOnly
+from family_star.permissions import IsOwner
 from profiles.models import Profile
 
 # class FamilyMemberList(generics.ListCreateAPIView):
@@ -34,12 +34,12 @@ class FamilyMemberList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
-class familyMemberDetailList(APIView):
+class FamilyMemberDetailList(APIView):
     """
     View for displaying and update one family member.  
     """
     serializer_class = FamilyMemberSerializer
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [IsOwner]
 
     def get_object(self, pk):
         try: 
