@@ -19,5 +19,8 @@ class FamilyMemberSerializer(serializers.ModelSerializer):
             'belongs_to_profile',
             'name',
             'family_member_img',
-            'role'
+            'role',
+            'star_points',
+            'ongoing_tasks',
+            'closed_tasks',
         ]

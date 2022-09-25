@@ -14,7 +14,7 @@ class FamilyMember(models.Model):
     belongs_to_profile = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
-        default= None,
+        default=None,
         null=False,
         )
     name = models.CharField(
