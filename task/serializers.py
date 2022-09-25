@@ -4,6 +4,8 @@ from .models import Task
 
 class TaskSerializer(serializers.ModelSerializer):
     belongs_to_profile = serializers.StringRelatedField(source='belongs_to_profile.user.username')
+    category_name = serializers.CharField(source='category.name')
+    category = serializers.StringRelatedField(source='category.id')
 
     class Meta:
         model = Task
@@ -13,6 +15,7 @@ class TaskSerializer(serializers.ModelSerializer):
             'title',
             'creator',
             'category',
+            'category_name',
             'end_date',
             'description',
             'star_points',
