@@ -3,6 +3,7 @@ from rest_framework import status, permissions
 from rest_framework.views import APIView
 from .models import Task
 from profiles.models import Profile
+from categories.models import Category
 from .serializers import TaskSerializer
 from rest_framework.response import Response
 from django.http import Http404
@@ -12,7 +13,7 @@ from family_star.permissions import IsOwner
 class TaskListView(APIView):
     """
     Used for view all tasks that belongs to 
-    current profile and for creating a new task.
+    current profile and for creating a new task. 
     """
     serialzer_class = TaskSerializer
 
@@ -28,8 +29,11 @@ class TaskListView(APIView):
             data=request.data, context={'request': request}
         )
         if serializer.is_valid():
+            validated_data = serializer.validated_data
             profile = Profile.objects.get(user=request.user)
-            serializer.save(belongs_to_profile=profile)
+            request_category = Category.objects.get(name=validated_data.get('category')['name'])
+
+            serializer.save(belongs_to_profile=profile, category=request_category)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
