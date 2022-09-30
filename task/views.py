@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework import status, permissions
 from rest_framework.views import APIView
+from rest_framework.mixins import UpdateModelMixin
 from .models import Task
 from profiles.models import Profile
 from categories.models import Category
@@ -94,26 +95,25 @@ class AssignTask(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
 
-    # def update(self, instance, validated_data):
-    #     """
-    #     Used for updating task form
-    #     """
-    #     task = Task.objects.get(id=instance.id)
+class TaskDone(APIView, UpdateModelMixin):
+    serialzer_class = TaskSerializer
+    permission_classes = [IsOwner]
 
-    #     if validated_data.get('title') is not None:
-    #         task.title = validated_data.get('title')
-    #         task.category = Category.objects.get(name=validated_data.get('category')['name'])
-    #         task.end_date = validated_data.get('end_date')
-    #         task.description = validated_data.get('description')
-    #         task.star_points = validated_data.get('star_points')
-    #         if (validated_data.get('assigned') is not None):
-    #             task.assigned = FamilyMember.objects.get(name=validated_data.get('assigned'))
-    #     if validated_data.get('title') is None:
-    #         task.assigned = validated_data.get('assigned')
-    #         familyMember = FamilyMember.objects.get(name=validated_data.get('assigned'))
-    #         familyMember.ongoing_tasks = familyMember.ongoing_tasks + 1  # Check if replace with objects filter .count()
-    #         familyMember.save()
-
-    #     task.save()
-    #     return task
+    def get_object(self, pk):
+        try:
+            task = Task.objects.get(pk=pk)
+            self.check_object_permissions(self.request, task)
+            return task
+        except Task.DoesNotExist:
+            raise Http404
+    
+    def patch(self, request, pk):
+        task = self.get_object(pk)
+        serializer = TaskSerializer(task, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+ 
