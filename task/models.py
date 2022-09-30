@@ -8,6 +8,10 @@ class Task(models.Model):
     """
     Family members are allowed to create a task without a end date
     """
+    TASK_STATUS = (
+        ('Todo','Todo'),
+        ('Done', 'Done'),
+        )
     belongs_to_profile = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
@@ -39,6 +43,7 @@ class Task(models.Model):
             null=True,
             blank=True,
         )
+    status = models.CharField(choices=TASK_STATUS, default="Todo", max_length=6)
 
     def __str__(self):
         return f"{self.title}"
