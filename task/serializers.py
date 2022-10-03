@@ -1,6 +1,9 @@
 from rest_framework import serializers
 from categories.models import Category
 from family_member.models import FamilyMember
+from rest_framework.response import Response
+from rest_framework import status
+
 from .models import Task
 
 class TaskSerializer(serializers.ModelSerializer):
@@ -18,17 +21,44 @@ class TaskSerializer(serializers.ModelSerializer):
         
         # If payload has no title (only containing info about status) and status id Done. 
         if validated_data.get('title') is None and validated_data.get('status') is "Done":
-            task.status = "Done"
+            # Someone needs to be assigned to task make "Done"
+            if task.assigned is None:
+                # TODO: Return a http status code
+                print("No one is assigned")
+            else:
+                assigned_family_member = FamilyMember.objects.get(id=task.assigned.id)
+                # If user remove task done. Assigned family member will loose star points and 1 closed task
+                if task.status == "Done":
+                    task.status = "Todo"
+                    assigned_family_member.closed_tasks = assigned_family_member.closed_tasks - 1
+                    # A family member can't have negative scores on their scoreboard. If negative, set to 0
+                    if assigned_family_member.closed_tasks < 0:
+                        assigned_family_member.closed_tasks = 0
+                    assigned_family_member.star_points = assigned_family_member.star_points - task.star_points
+                    if assigned_family_member.star_points < 0:
+                        assigned_family_member.star_points = 0
+                # When a task is marked as done. Assigned family member will gain star points and 1 closed task
+                else:
+                    task.status = "Done"
+                    assigned_family_member.closed_tasks = assigned_family_member.closed_tasks + 1 
+                    assigned_family_member.star_points = assigned_family_member.star_points + task.star_points
+                   
+                assigned_family_member.save()
+                task.save()
 
         # If payload has no title ans status (only containing info about assginment).
         elif validated_data.get('title') is None and validated_data.get('status') is None:
             familyMember = FamilyMember.objects.get(name=validated_data.get('assigned'))
+            # If a family member is assigned. Remove assigne and subtract ongoing tasks by 1
             if task.assigned is not None:
                 task.assigned = None
                 familyMember.ongoing_tasks = familyMember.ongoing_tasks - 1
+                if familyMember.ongoing_tasks < 0:
+                    familyMember.ongoing_tasks = 0
+            # Assign current family member on task and add ongoing tasks by 1
             else: 
                 task.assigned = validated_data.get('assigned')
-                familyMember.ongoing_tasks = familyMember.ongoing_tasks + 1 
+                familyMember.ongoing_tasks = familyMember.ongoing_tasks + 1
 
             familyMember.save()
 
