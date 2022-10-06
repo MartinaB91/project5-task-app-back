@@ -19,5 +19,10 @@
 ## Deployment
 ## Credits
 ### Code
+- [Django REST framework documentation](https://www.django-rest-framework.org/) - Used throughout the project.
+- [Stackoverflow - Q](https://stackoverflow.com/questions/687295/how-do-i-do-a-not-equal-in-django-queryset-filtering) - Used as inspiration when creating functionality for filtering and searching tasks
+- [Stackoverflow - Write explicit update](https://stackoverflow.com/questions/62847000/write-an-explicit-update-method-for-serializer) - Used as inspiration when updating task
+- [Geeksforgeeks](https://www.geeksforgeeks.org/how-to-create-and-use-signals-in-django/) - Used as inspiration when creating Django signals.
+
 ### Content and media
 ### Test
