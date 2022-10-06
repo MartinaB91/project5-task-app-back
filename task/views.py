@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import status, permissions
+from rest_framework import generics, filters, status, permissions
 from rest_framework.views import APIView
 from rest_framework.mixins import UpdateModelMixin
 from .models import Task
@@ -11,18 +11,50 @@ from django.http import Http404
 from family_star.permissions import IsOwner
 from family_member.models import FamilyMember
 from categories.models import Category
+from django_filters.rest_framework import DjangoFilterBackend
+from django.db.models import Q
 
 
-class TaskListView(APIView):
+class TaskListView(generics.ListCreateAPIView):
     """
     Used for view all tasks that belongs to 
     current profile and for creating a new task. 
     """
     serialzer_class = TaskSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = [
+        'title',
+    ]
+    queryset = Task.objects.all()
+
+    def get_serializer_class(self):
+        return TaskSerializer
+    
 
     def get(self, request):
+        """
+        Get all tasks that belongs to a profile or get the results of from search query or filtering. 
+        """
         profile = Profile.objects.get(user=request.user)
-        task = Task.objects.filter(belongs_to_profile=profile)
+        family_members = FamilyMember.objects.filter(belongs_to_profile=profile)
+        if '&search' in request.get_full_path() and '?filter' in request.get_full_path(): # Get searching or filtering
+            search = self.request.query_params.get('search')
+            filter = self.request.query_params.get('filter')
+            if filter == "my_tasks":
+                current_family_member_id = self.request.query_params.get('family_member_id')
+                task = Task.objects.filter(belongs_to_profile=profile, assigned_id=current_family_member_id)
+            elif filter == "assigned":
+                task = Task.objects.filter(~Q(assigned=None), belongs_to_profile=profile, status='Todo')
+            elif filter == "done":
+                task = Task.objects.filter(belongs_to_profile=profile, status='Done')
+            elif filter == "all_tasks":
+                task = Task.objects.filter(belongs_to_profile=profile)
+            else:
+                task = Task.objects.filter(belongs_to_profile=profile, status='Todo')
+            if search != "undefined": # Search in already filtered tasks
+                task = task.filter(Q(belongs_to_profile=profile) & Q(title__startswith=search) | Q(description__startswith=search)).order_by('created_on')
+        else: # Get without search or filter
+            task = Task.objects.filter(belongs_to_profile=profile, status='Todo')
         serializer = TaskSerializer(task, many=True, context={'request': request}
         )
         return Response(serializer.data)
