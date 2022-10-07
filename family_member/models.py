@@ -1,5 +1,5 @@
 from django.db import models
-from cloudinary.models import CloudinaryField
+# from cloudinary.models import CloudinaryField
 from profiles.models import Profile
 
 
@@ -25,13 +25,14 @@ class FamilyMember(models.Model):
         # TODO: Check if two different profiles can have a family member with the same name (want that to be possible)
     # family_member_img = CloudinaryField(
     #     "family_member_img", 
-    #     default="default_image",
+    #     default="../default_profile_uzyq2o",
     #     )
     family_member_img = models.ImageField(
         upload_to='images/',
-        default="default_image",
-        blank=True
+        default='../rabbit-face-svgrepo-com_frcjxf',
+        blank=True,
     )
+
     role = models.IntegerField(choices=ROLE_PRIVILEGE, default=0)
     star_points = models.IntegerField(default="0")
     ongoing_tasks = models.IntegerField(default="0")
