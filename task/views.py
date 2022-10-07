@@ -42,19 +42,19 @@ class TaskListView(generics.ListCreateAPIView):
             filter = self.request.query_params.get('filter')
             if filter == "my_tasks":
                 current_family_member_id = self.request.query_params.get('family_member_id')
-                task = Task.objects.filter(belongs_to_profile=profile, assigned_id=current_family_member_id)
+                task = Task.objects.filter(belongs_to_profile=profile, assigned_id=current_family_member_id, status='Todo').order_by('end_date')
             elif filter == "assigned":
-                task = Task.objects.filter(~Q(assigned=None), belongs_to_profile=profile, status='Todo')
+                task = Task.objects.filter(~Q(assigned=None), belongs_to_profile=profile, status='Todo').order_by('end_date')
             elif filter == "done":
-                task = Task.objects.filter(belongs_to_profile=profile, status='Done')
+                task = Task.objects.filter(belongs_to_profile=profile, status='Done').order_by('-end_date')
             elif filter == "all_tasks":
-                task = Task.objects.filter(belongs_to_profile=profile)
+                task = Task.objects.filter(belongs_to_profile=profile).order_by('-end_date')
             else:
-                task = Task.objects.filter(belongs_to_profile=profile, status='Todo')
+                task = Task.objects.filter(Q(assigned=None), belongs_to_profile=profile, status='Todo').order_by('end_date')
             if search != "undefined": # Search in already filtered tasks
                 task = task.filter(Q(belongs_to_profile=profile) & Q(title__startswith=search) | Q(description__startswith=search)).order_by('created_on')
-        else: # Get without search or filter
-            task = Task.objects.filter(belongs_to_profile=profile, status='Todo')
+        else: # Get without search or filter. Default value for taskboard tasks (show tasks not assigned that has status todo). 
+            task = Task.objects.filter(Q(assigned=None), belongs_to_profile=profile, status='Todo').order_by('end_date')
         serializer = TaskSerializer(task, many=True, context={'request': request}
         )
         return Response(serializer.data)
