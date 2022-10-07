@@ -37,11 +37,14 @@ class TaskSerializer(serializers.ModelSerializer):
                     assigned_family_member.star_points = assigned_family_member.star_points - task.star_points
                     if assigned_family_member.star_points < 0:
                         assigned_family_member.star_points = 0
-                # When a task is marked as done. Assigned family member will gain star points and 1 closed task
+                # When a task is marked as done. 
+                # Assigned family member will gain star points and 1 point will be added to closed task.
+                # 1 point will be removed from ongoing tasks. 
                 else:
                     task.status = "Done"
                     assigned_family_member.closed_tasks = assigned_family_member.closed_tasks + 1 
                     assigned_family_member.star_points = assigned_family_member.star_points + task.star_points
+                    assigned_family_member.ongoing_tasks = assigned_family_member.ongoing_tasks - 1
                    
                 assigned_family_member.save()
                 task.save()
