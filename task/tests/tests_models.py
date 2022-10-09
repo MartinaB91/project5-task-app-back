@@ -5,11 +5,15 @@ from family_member.models import FamilyMember
 from categories.models import Category
 from datetime import date
 import datetime
+from django.contrib.auth.models import User
+
 
 class TaskModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
+        user = User.objects.create(username= 'Emils-profile')
         family_member = FamilyMember.objects.create(
+            belongs_to_profile= user.profile,
             name = 'Emil',
             family_member_img = 'emil.PNG',
             star_points = 30,
@@ -20,6 +24,7 @@ class TaskModelTest(TestCase):
             name = 'Test category 1',
         )
         task = Task.objects.create(
+            belongs_to_profile_id=user.profile.id,
             title = 'Test task',
             creator = family_member,
             category = category,
@@ -28,6 +33,13 @@ class TaskModelTest(TestCase):
             star_points = 0,
             assigned = family_member,
             )
+   
+    def test_task_belongs_to_profile(self):
+        """
+        Tests that the task belongs to our above created profile
+        """
+        task = Task.objects.first()
+        assert task.belongs_to_profile.user.username == 'Emils-profile'
 
     def test_task_title(self):
         """
