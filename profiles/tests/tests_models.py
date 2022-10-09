@@ -10,7 +10,6 @@ class ProfileModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         user = User.objects.create_user('Pippi') # Creates a user with only a username
-        profile = Profile.objects.create(user=user)
 
     def test_profile_user_username(self):
         """
