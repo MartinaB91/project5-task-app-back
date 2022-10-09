@@ -10,7 +10,7 @@ class FamilyMemberModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         """
-        This setup is intentionally leaving out FamilyMember role.
+        This setup is intentionally leaving out FamilyMember role and img.
         This because default value is tested. 
         """
         user = User.objects.create(username= 'Pippis-profile')
@@ -18,11 +18,17 @@ class FamilyMemberModelTest(TestCase):
         family_member = FamilyMember.objects.create(
             belongs_to_profile= user.profile,
             name = 'Pippi',
-            family_member_img = 'pippi.PNG',
             star_points = 0,
             ongoing_tasks = 0,
             closed_tasks = 0
             )
+
+    def test_family_members_belong_to_profile(self):
+        """
+        Tests that the family member is given the expected user/profile.
+        """
+        family_member = FamilyMember.objects.first()
+        assert family_member.belongs_to_profile.username == 'Pippis-profile'
 
     def test_family_members_name(self):
         """
@@ -32,8 +38,12 @@ class FamilyMemberModelTest(TestCase):
         assert family_member.name == 'Pippi'
     
     def test_family_members_img(self):
-        pass 
-
+        """
+        Tests that default img is used when no img is added.
+        """
+        family_member = FamilyMember.objects.first()
+        assert family_member.family_member_img == '../rabbit-face-svgrepo-com_frcjxf'
+        
     
     def test_family_members_role_default_value(self):
         """
@@ -71,8 +81,3 @@ class FamilyMemberModelTest(TestCase):
         """
         family_member = FamilyMember.objects.first()
         assert family_member.closed_tasks == 0 
-
-
-
-
-    
