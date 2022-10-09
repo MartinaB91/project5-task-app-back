@@ -22,11 +22,6 @@ class FamilyMember(models.Model):
         unique=True,
         blank=False
         )  
-        # TODO: Check if two different profiles can have a family member with the same name (want that to be possible)
-    # family_member_img = CloudinaryField(
-    #     "family_member_img", 
-    #     default="../default_profile_uzyq2o",
-    #     )
     family_member_img = models.ImageField(
         upload_to='images/',
         default='../rabbit-face-svgrepo-com_frcjxf',
