@@ -49,13 +49,14 @@ class TaskSerializer(serializers.ModelSerializer):
                 assigned_family_member.save()
                 task.save()
 
-        # If payload has no title ans status (only containing info about assginment).
+        # If payload has no title ans status (only containing info about assignment).
         elif validated_data.get('title') is None and validated_data.get('status') is None:
             familyMember = FamilyMember.objects.get(name=validated_data.get('assigned'))
             # If a family member is assigned. Remove assigne and subtract ongoing tasks by 1
             if task.assigned is not None:
                 task.assigned = None
                 familyMember.ongoing_tasks = familyMember.ongoing_tasks - 1
+
                 if familyMember.ongoing_tasks < 0:
                     familyMember.ongoing_tasks = 0
             # Assign current family member on task and add ongoing tasks by 1
@@ -72,10 +73,34 @@ class TaskSerializer(serializers.ModelSerializer):
             task.description = validated_data.get('description')
             task.star_points = validated_data.get('star_points')
             if (validated_data.get('assigned') is not None):
-                task.assigned = FamilyMember.objects.get(name=validated_data.get('assigned'))
+                familyMember = FamilyMember.objects.get(name=validated_data.get('assigned'))
+                task.assigned = familyMember
+                familyMember.ongoing_tasks = familyMember.ongoing_tasks + 1
+                familyMember.save()
 
         task.save()
         return task
+    
+    # Override create to be able to change familymember score if is assigned at create form
+    def create(self, validated_data):
+        task = Task.objects.create(
+            title=validated_data.get('title'),
+            category=Category.objects.get(name=validated_data.get('category')),
+            creator=validated_data.get('creator'),
+            belongs_to_profile=validated_data.get('belongs_to_profile'),
+            end_date=validated_data.get('end_date'),
+            description=validated_data.get('description'),
+            star_points=validated_data.get('star_points')
+        )
+
+        if (validated_data.get('assigned') is not None):
+            familyMember = FamilyMember.objects.get(name=validated_data.get('assigned'))
+            task.assigned = familyMember
+            familyMember.ongoing_tasks = familyMember.ongoing_tasks + 1
+            familyMember.save()
+        task.save()
+        return task
+
 
     class Meta:
         model = Task
