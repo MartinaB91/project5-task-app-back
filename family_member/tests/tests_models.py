@@ -1,6 +1,9 @@
 import pytest
 from django.test import TestCase
 from family_member.models import FamilyMember
+from profiles.models import Profile
+from django.contrib.auth.models import User
+
 
 
 class FamilyMemberModelTest(TestCase):
@@ -10,7 +13,10 @@ class FamilyMemberModelTest(TestCase):
         This setup is intentionally leaving out FamilyMember role.
         This because default value is tested. 
         """
+        user = User.objects.create(username= 'Pippis-profile')
+
         family_member = FamilyMember.objects.create(
+            belongs_to_profile= user.profile,
             name = 'Pippi',
             family_member_img = 'pippi.PNG',
             star_points = 0,
