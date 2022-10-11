@@ -17,12 +17,18 @@
 ### Other tools
 - [GitHub Issues](https://github.com/features/issues) - Used for project planning 
 - [Gunicorn (20.1.0)](https://gunicorn.org/) - Used as inspiration when maping out categories 
+- [Graphviz](https://dreampuf.github.io/GraphvizOnline/) - Used for generating pretty database schema from dot-file
 - [Heroku](https://id.heroku.com/login) - Used to deploy app
 - [Pyscopg2 (2.9.3)](https://pypi.org/project/psycopg2/) - Used for connecting PostgreSQL to Python 
 ### Database Scheme
 <img src="documentation/readme-images/db_scheme.svg">
 
+## Testing
+Read more about test and validation [here](/testing/TEST.md)
+
 ## Future improvements
+### Code
+- To do maintainability easier the search and filter functionality could be moved to it's own method.
 ## Deployment
 ## Credits
 ### Code
