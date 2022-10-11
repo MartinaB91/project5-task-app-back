@@ -20,6 +20,8 @@
 - [Heroku](https://id.heroku.com/login) - Used to deploy app
 - [Pyscopg2 (2.9.3)](https://pypi.org/project/psycopg2/) - Used for connecting PostgreSQL to Python 
 ### Database Scheme
+<img src="documentation/readme-images/db_scheme.svg">
+
 ## Future improvements
 ## Deployment
 ## Credits
