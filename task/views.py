@@ -10,73 +10,98 @@ from rest_framework.response import Response
 from django.http import Http404
 from family_star.permissions import IsOwner
 from family_member.models import FamilyMember
-from categories.models import Category
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
+from family_star.permissions import IsOwner
 
 
 class TaskListView(generics.ListCreateAPIView):
     """
-    Used for view all tasks that belongs to 
-    current profile and for creating a new task. 
+    Used for view all tasks that belongs to
+    current profile and for creating a new task.
     """
+
+    permission_classes = [IsOwner]
     serialzer_class = TaskSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = [
-        'title',
+        "title",
     ]
     queryset = Task.objects.all()
 
     def get_serializer_class(self):
         return TaskSerializer
-    
 
     def get(self, request):
         """
-        Get all tasks that belongs to a profile or get the results of from search query or filtering. 
+        Get all tasks that belongs to a profile or get the results of from search query or filtering.
         """
         profile = Profile.objects.get(user=request.user)
         family_members = FamilyMember.objects.filter(belongs_to_profile=profile)
-        if '&search' in request.get_full_path() and '?filter' in request.get_full_path(): # Get searching or filtering
-            search = self.request.query_params.get('search')
-            filter = self.request.query_params.get('filter')
+        if (
+            "&search" in request.get_full_path()
+            and "?filter" in request.get_full_path()
+        ):  # Get searching or filtering
+            search = self.request.query_params.get("search")
+            filter = self.request.query_params.get("filter")
             if filter == "my_tasks":
-                current_family_member_id = self.request.query_params.get('family_member_id')
-                task = Task.objects.filter(belongs_to_profile=profile, assigned_id=current_family_member_id, status='Todo').order_by('end_date')
+                current_family_member_id = self.request.query_params.get(
+                    "family_member_id"
+                )
+                task = Task.objects.filter(
+                    belongs_to_profile=profile,
+                    assigned_id=current_family_member_id,
+                    status="Todo",
+                ).order_by("end_date")
             elif filter == "assigned":
-                task = Task.objects.filter(~Q(assigned=None), belongs_to_profile=profile, status='Todo').order_by('end_date')
+                task = Task.objects.filter(
+                    ~Q(assigned=None), belongs_to_profile=profile, status="Todo"
+                ).order_by("end_date")
             elif filter == "done":
-                task = Task.objects.filter(belongs_to_profile=profile, status='Done').order_by('-end_date')
+                task = Task.objects.filter(
+                    belongs_to_profile=profile, status="Done"
+                ).order_by("-end_date")
             elif filter == "all_tasks":
-                task = Task.objects.filter(belongs_to_profile=profile).order_by('-end_date')
+                task = Task.objects.filter(belongs_to_profile=profile).order_by(
+                    "-end_date"
+                )
             else:
-                task = Task.objects.filter(Q(assigned=None), belongs_to_profile=profile, status='Todo').order_by('end_date')
-            if search != "undefined": # Search in already filtered tasks
-                task = task.filter(Q(belongs_to_profile=profile) & Q(title__startswith=search) | Q(description__startswith=search)).order_by('created_on')
-        else: # Get without search or filter. Default value for taskboard tasks (show tasks not assigned that has status todo). 
-            task = Task.objects.filter(Q(assigned=None), belongs_to_profile=profile, status='Todo').order_by('end_date')
-        serializer = TaskSerializer(task, many=True, context={'request': request}
-        )
+                task = Task.objects.filter(
+                    Q(assigned=None), belongs_to_profile=profile, status="Todo"
+                ).order_by("end_date")
+            if search != "undefined":  # Search in already filtered tasks
+                task = task.filter(
+                    Q(belongs_to_profile=profile) & Q(title__startswith=search)
+                    | Q(description__startswith=search)
+                ).order_by("created_on")
+        else:  # Get without search or filter. Default value for taskboard tasks (show tasks not assigned that has status todo).
+            task = Task.objects.filter(
+                Q(assigned=None), belongs_to_profile=profile, status="Todo"
+            ).order_by("end_date")
+        serializer = TaskSerializer(task, many=True, context={"request": request})
         return Response(serializer.data)
-  
+
     def post(self, request):
-        serializer = TaskSerializer(
-            data=request.data, context={'request': request}
-        )
+        serializer = TaskSerializer(data=request.data, context={"request": request})
         if serializer.is_valid():
             validated_data = serializer.validated_data
             profile = Profile.objects.get(user=request.user)
-            request_category = Category.objects.get(name=validated_data.get('category')['name'])
+            request_category = Category.objects.get(
+                name=validated_data.get("category")["name"]
+            )
 
             serializer.save(belongs_to_profile=profile, category=request_category)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class TaskDetail(APIView):
     """
-    Used for displaying one task that belongs to 
-    the current profile, update and delete a task. 
+    Used for displaying one task that belongs to
+    the current profile, update and delete a task.
     """
+
+    permission_classes = [IsOwner]
     serialzer_class = TaskSerializer
     permission_classes = [IsOwner]
 
@@ -87,7 +112,7 @@ class TaskDetail(APIView):
             return task
         except Task.DoesNotExist:
             raise Http404
-    
+
     def get(self, request, pk):
         task = self.get_object(pk)
         serializer = TaskSerializer(task)
@@ -100,14 +125,13 @@ class TaskDetail(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-       
+
     def delete(self, request, pk):
         task = self.get_object(pk)
         task.delete()
-        return  Response(
-            status=status.HTTP_204_NO_CONTENT
-        )
-        
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class AssignTask(APIView):
     serialzer_class = TaskSerializer
     permission_classes = [IsOwner]
@@ -119,7 +143,7 @@ class AssignTask(APIView):
             return task
         except Task.DoesNotExist:
             raise Http404
-    
+
     def patch(self, request, pk):
         task = self.get_object(pk)
         serializer = TaskSerializer(task, data=request.data, partial=True)
@@ -127,7 +151,7 @@ class AssignTask(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+
 
 class TaskDone(APIView, UpdateModelMixin):
     serialzer_class = TaskSerializer
@@ -140,7 +164,7 @@ class TaskDone(APIView, UpdateModelMixin):
             return task
         except Task.DoesNotExist:
             raise Http404
-    
+
     def patch(self, request, pk):
         task = self.get_object(pk)
         serializer = TaskSerializer(task, data=request.data, partial=True)
@@ -148,4 +172,3 @@ class TaskDone(APIView, UpdateModelMixin):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
- 

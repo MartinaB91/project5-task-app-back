@@ -9,24 +9,55 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('categories', '0001_initial'),
-        ('family_member', '0001_initial'),
+        ("categories", "0001_initial"),
+        ("family_member", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Task',
+            name="Task",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=100)),
-                ('created_on', models.DateTimeField(auto_now_add=True)),
-                ('updated_on', models.DateTimeField(auto_now=True)),
-                ('end_date', models.DateField(blank=True, null=True)),
-                ('description', models.TextField()),
-                ('star_points', models.IntegerField(default='0')),
-                ('assigned', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='assigned_family_member', to='family_member.familymember')),
-                ('category', models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, related_name='task_category', to='categories.category')),
-                ('creator', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='task_creator', to='family_member.familymember')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=100)),
+                ("created_on", models.DateTimeField(auto_now_add=True)),
+                ("updated_on", models.DateTimeField(auto_now=True)),
+                ("end_date", models.DateField(blank=True, null=True)),
+                ("description", models.TextField()),
+                ("star_points", models.IntegerField(default="0")),
+                (
+                    "assigned",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="assigned_family_member",
+                        to="family_member.familymember",
+                    ),
+                ),
+                (
+                    "category",
+                    models.ForeignKey(
+                        default=None,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="task_category",
+                        to="categories.category",
+                    ),
+                ),
+                (
+                    "creator",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="task_creator",
+                        to="family_member.familymember",
+                    ),
+                ),
             ],
         ),
     ]

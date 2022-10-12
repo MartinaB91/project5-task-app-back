@@ -6,13 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('task', '0003_alter_task_assigned'),
+        ("task", "0003_alter_task_assigned"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='task',
-            name='status',
-            field=models.CharField(choices=[('Todo', 'Todo'), ('Done', 'Done')], default='Todo', max_length=6),
+            model_name="task",
+            name="status",
+            field=models.CharField(
+                choices=[("Todo", "Todo"), ("Done", "Done")],
+                default="Todo",
+                max_length=6,
+            ),
         ),
     ]
