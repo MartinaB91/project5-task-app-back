@@ -7,7 +7,7 @@ class CategoryModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         category = Category.objects.create(
-            name = 'Test category 2',
+            name="Test category 2",
         )
 
     def test_category_name(self):
@@ -15,7 +15,7 @@ class CategoryModelTest(TestCase):
         Tests that the category name is as expected
         """
         category = Category.objects.first()
-        assert category.name == 'Test category 2'
+        assert category.name == "Test category 2"
 
     def test_category_icon_default(self):
         pass

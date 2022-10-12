@@ -4,6 +4,7 @@ from .models import Category
 from rest_framework.views import APIView
 from .serializers import CategorySerializer
 
+
 class CategoryList(APIView):
     Model = Category
     serializer_class = CategorySerializer
@@ -12,4 +13,3 @@ class CategoryList(APIView):
         categories = Category.objects.all()
         serializer = CategorySerializer(categories, many=True)
         return Response(serializer.data)
-

@@ -14,6 +14,7 @@ class FamilyMemberList(APIView):
     Views all family members
 
     """
+    permission_classes = [IsOwner]
     serialzer_class = FamilyMemberSerializer
 
     def get(self, request):
@@ -21,6 +22,7 @@ class FamilyMemberList(APIView):
         family_members = FamilyMember.objects.filter(belongs_to_profile=profile)
         serializer = FamilyMemberSerializer(family_members, many=True)
         return Response(serializer.data)
+
     
     def post(self, request):
         serializer = FamilyMemberSerializer(
@@ -33,7 +35,7 @@ class FamilyMemberList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
-class FamilyMemberDetailList(APIView):
+class FamilyMemberDetailView(APIView):
     """
     View for displaying and update one family member.  
     """
