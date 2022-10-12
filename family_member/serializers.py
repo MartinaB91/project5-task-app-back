@@ -2,9 +2,7 @@ from rest_framework import serializers
 from .models import FamilyMember
 from profiles.models import Profile
 
-# from django.contrib.auth.decorators import login_required
 
-# @login_required
 class FamilyMemberSerializer(serializers.ModelSerializer):
     belongs_to_profile = serializers.StringRelatedField(source='belongs_to_profile.user.username')
     name = serializers.CharField(max_length=200)
