@@ -13,8 +13,8 @@ class ProfileDetailList(APIView):
     """
     View one profile by id
     """
-    serializer_class = ProfileSerializer
 
+    serializer_class = ProfileSerializer
 
     def get_object(self, pk):
         try:
