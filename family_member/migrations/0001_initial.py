@@ -10,24 +10,51 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('profiles', '0001_initial'),
+        ("profiles", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='FamilyMember',
+            name="FamilyMember",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255, unique=True)),
-                ('family_member_img', cloudinary.models.CloudinaryField(default='default_image', max_length=255, verbose_name='family_member_image')),
-                ('role', models.IntegerField(choices=[(0, 'Child'), (1, 'Parent')], default=0)),
-                ('star_points', models.IntegerField(default='0')),
-                ('ongoing_tasks', models.IntegerField(default='0')),
-                ('closed_tasks', models.IntegerField(default='0')),
-                ('belongs_to_profile', models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='profiles.profile')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255, unique=True)),
+                (
+                    "family_member_img",
+                    cloudinary.models.CloudinaryField(
+                        default="default_image",
+                        max_length=255,
+                        verbose_name="family_member_image",
+                    ),
+                ),
+                (
+                    "role",
+                    models.IntegerField(
+                        choices=[(0, "Child"), (1, "Parent")], default=0
+                    ),
+                ),
+                ("star_points", models.IntegerField(default="0")),
+                ("ongoing_tasks", models.IntegerField(default="0")),
+                ("closed_tasks", models.IntegerField(default="0")),
+                (
+                    "belongs_to_profile",
+                    models.ForeignKey(
+                        default=None,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="profiles.profile",
+                    ),
+                ),
             ],
             options={
-                'verbose_name_plural': 'family members',
+                "verbose_name_plural": "family members",
             },
         ),
     ]

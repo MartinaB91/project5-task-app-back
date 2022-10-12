@@ -4,21 +4,22 @@ from profiles.models import Profile
 
 
 class FamilyMemberSerializer(serializers.ModelSerializer):
-    belongs_to_profile = serializers.StringRelatedField(source='belongs_to_profile.user.username')
+    belongs_to_profile = serializers.StringRelatedField(
+        source="belongs_to_profile.user.username"
+    )
     name = serializers.CharField(max_length=200)
-    # family_member_img = serializers.ReadOnlyField(source='family_member_img.url') 
+    # family_member_img = serializers.ReadOnlyField(source='family_member_img.url')
     role = serializers.ChoiceField(choices=FamilyMember.ROLE_PRIVILEGE)
 
-
-    class Meta: 
+    class Meta:
         model = FamilyMember
         fields = [
-            'id',
-            'belongs_to_profile',
-            'name',
-            'family_member_img',
-            'role',
-            'star_points',
-            'ongoing_tasks',
-            'closed_tasks',
+            "id",
+            "belongs_to_profile",
+            "name",
+            "family_member_img",
+            "role",
+            "star_points",
+            "ongoing_tasks",
+            "closed_tasks",
         ]

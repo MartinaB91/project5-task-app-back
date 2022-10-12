@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class FamilyMemberConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'family_member'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "family_member"
