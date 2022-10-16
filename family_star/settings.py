@@ -117,9 +117,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-        'https://project5-task-app-front.herokuapp.com'
-    ]
+CORS_ALLOWED_ORIGINS = ['*']
+# CORS_ALLOWED_ORIGINS = [
+    #     'https://project5-task-app-front.herokuapp.com'
+    # ]
 # if 'CLIENT_ORIGIN' in os.environ:
 #     CORS_ALLOWED_ORIGINS = [
 #         os.environ.get('CLIENT_ORIGIN')
