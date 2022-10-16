@@ -91,6 +91,7 @@ REST_FRAMEWORK = {
         
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
     )]
+
 }
 
 
