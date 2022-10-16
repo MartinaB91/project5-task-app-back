@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 
 class Profile(models.Model):
     """
-    The profile is shared between all family members and each member uses same profile for sign in.
+    The profile is shared between all family members
+    and each member uses same profile for sign in.
 
     """
 

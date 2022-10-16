@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from family_member.models import FamilyMember
 from .models import Profile
 
 
