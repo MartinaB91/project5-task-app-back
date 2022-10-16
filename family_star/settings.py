@@ -45,10 +45,11 @@ DEBUG = False
 if 'DEBUG' in os.environ:
     DEBUG = True
 
-if 'DEV' in os.environ:
-    ALLOWED_HOSTS = ['localhost']
-else:
-    ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
+# if 'DEV' in os.environ:
+#     ALLOWED_HOSTS = ['localhost']
+# else:
+#     ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
+ALLOWED_HOSTS = ['project5-task-app-back.herokuapp.com']
 
 CORS_ALLOW_ALL_ORIGINS = True
 # CORS_ALLOWED_ORIGINS = [
