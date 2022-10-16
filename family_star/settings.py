@@ -50,7 +50,7 @@ if 'DEV' in os.environ:
 else:
     ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
 
-CORS_ALLOWED_ORIGINS = ['*']
+CORS_ALLOW_ALL_ORIGINS = True
 # CORS_ALLOWED_ORIGINS = [
     #     'https://project5-task-app-front.herokuapp.com'
     # ]
