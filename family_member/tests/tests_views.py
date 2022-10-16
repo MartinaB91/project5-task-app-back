@@ -15,7 +15,6 @@ import ast
 class FamilyMemberViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        # factory = APIRequestFactory()
         user = User.objects.create(username="Lotta")
         familyMember = FamilyMember.objects.create(
             name="Pippi", belongs_to_profile=user.profile
@@ -26,16 +25,13 @@ class FamilyMemberViewTest(TestCase):
         """
         Tests FamilyMember post list view response
         """
-        # Arrange
         view = FamilyMemberList.as_view()
         factory = APIRequestFactory()
         user = User.objects.first()
-        # Act
         request = factory.get("members/")
-        force_authenticate(request, user=user)
+        force_authenticate(request, user=user) # Sign in
         response = view(request)
         response.render()
-        # Assert
         # https://stackoverflow.com/questions/49184578/how-to-convert-bytes-type-to-dictionary
         # response.content is byte type, link above is how to convert to dictionary
         response_content = response.content.decode("UTF-8")
@@ -53,11 +49,9 @@ class FamilyMemberViewTest(TestCase):
         """
         Tests FamilyMember post list view response
         """
-        # Arrange
         view = FamilyMemberDetailView.as_view()
         factory = APIRequestFactory()
         user = User.objects.first()
-        # Act
         request = factory.get("members/1")  # Is only one user therefore id = 1
         force_authenticate(request, user=user)
         response = view(request, pk=user.id)
