@@ -64,7 +64,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 #         os.environ.get('CLIENT_ORIGIN_DEV')
 #     ]
 
-CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_CREDENTIALS = False
 
 # Application definition
 
