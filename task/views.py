@@ -103,20 +103,32 @@ class TaskDetail(APIView):
 
     permission_classes = [IsOwner]
     serialzer_class = TaskSerializer
-    permission_classes = [IsOwner]
 
     def get_object(self, pk):
         try:
             task = Task.objects.get(pk=pk)
-            self.check_object_permissions(self.request, task)
-            return task
+            if self.request.user == task.belongs_to_profile:
+                self.check_object_permissions(self.request, task)
+                return task
+            else:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
         except Task.DoesNotExist:
             raise Http404
 
     def get(self, request, pk):
-        task = self.get_object(pk)
-        serializer = TaskSerializer(task)
-        return Response(serializer.data)
+
+        if request.user.is_authenticated:
+            # todo: TEST this
+            task = self.get_object(pk)
+            if self.request.user == task.belongs_to_profile:
+                serializer = TaskSerializer(task)
+                return Response(serializer.data)
+            else:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
 
     def put(self, request, pk):
         task = self.get_object(pk)
