@@ -1,3 +1,3 @@
 release: python manage.py makemigrations && python manage.py migrate
 
-web: gunicorn family_star.wsgi
+web: gunicorn src.family_star.wsgi
