@@ -44,7 +44,9 @@ class Task(models.Model):
         null=True,
         blank=True,
     )
-    status = models.CharField(choices=TASK_STATUS, default="Todo", max_length=6)
+    status = models.CharField(
+        choices=TASK_STATUS, default="Todo", max_length=6
+        )
 
     def __str__(self):
         return f"{self.title}"
