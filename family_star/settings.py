@@ -49,29 +49,8 @@ if 'DEBUG' in os.environ:
 #     ALLOWED_HOSTS = ['localhost']
 # else:
 #     ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
+ALLOWED_HOSTS = ['*']
 CORS_ORIGIN_ALLOW_ALL = True
-
-ALLOWED_HOSTS = ["project5-task-app-back.herokuapp.com",
-                "https://project5-task-app-back.herokuapp.com/"
-    ]
-
-CORS_ALLOWED_ORIGINS = [
-        'https://project5-task-app-front.herokuapp.com',
-    ]
-
-CORS_ALLOW_CREDENTIALS = False
-
-CORS_ALLOW_HEADERS = [
-  'accept',
-  'accept-encoding',
-  'authorization',
-  'content-type',
-  'origin',
-  'dnt',
-  'user-agent',
-  'x-csrftoken',
-  'x-requested-with']
-CORS_ALLOW_METHODS = ['DELETE', 'GET', 'OPTIONS', 'PATCH', 'POST', 'PUT']
 
 # if 'CLIENT_ORIGIN' in os.environ:
 #     CORS_ALLOWED_ORIGINS = [
