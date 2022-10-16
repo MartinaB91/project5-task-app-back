@@ -50,6 +50,22 @@ if 'DEV' in os.environ:
 else:
     ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
 
+CORS_ALLOWED_ORIGINS = ['*']
+# CORS_ALLOWED_ORIGINS = [
+    #     'https://project5-task-app-front.herokuapp.com'
+    # ]
+# if 'CLIENT_ORIGIN' in os.environ:
+#     CORS_ALLOWED_ORIGINS = [
+#         os.environ.get('CLIENT_ORIGIN')
+#     ]
+
+# if 'CLIENT_ORIGIN_DEV' in os.environ:
+#     CORS_ALLOWED_ORIGINS = [
+#         os.environ.get('CLIENT_ORIGIN_DEV')
+#     ]
+
+CORS_ALLOW_CREDENTIALS = True
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -116,22 +132,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-CORS_ALLOWED_ORIGINS = ['*']
-# CORS_ALLOWED_ORIGINS = [
-    #     'https://project5-task-app-front.herokuapp.com'
-    # ]
-# if 'CLIENT_ORIGIN' in os.environ:
-#     CORS_ALLOWED_ORIGINS = [
-#         os.environ.get('CLIENT_ORIGIN')
-#     ]
-
-# if 'CLIENT_ORIGIN_DEV' in os.environ:
-#     CORS_ALLOWED_ORIGINS = [
-#         os.environ.get('CLIENT_ORIGIN_DEV')
-#     ]
-
-CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'family_star.urls'
 
