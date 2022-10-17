@@ -89,8 +89,9 @@ SITE_ID = 1
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [(
         'rest_framework.authentication.SessionAuthentication'
-        if 'DEV' in os.environ
-        else 'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
+        'rest_framework.authentication.TokenAuthentication'
+        # if 'DEV' in os.environ
+        # else 'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
         
 
         # TODO: Check why SessionAuth does not work. User is not signed out on dj-rest-auth/logout request
