@@ -65,7 +65,9 @@ class TaskSerializer(serializers.ModelSerializer):
                     assigned_family_member.ongoing_tasks = (
                         assigned_family_member.ongoing_tasks - 1
                     )
-
+                    if assigned_family_member.ongoing_tasks < 0:
+                        assigned_family_member.ongoing_tasks = 0
+                    
                 assigned_family_member.save()
                 task.save()
 
