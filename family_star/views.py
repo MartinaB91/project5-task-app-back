@@ -15,6 +15,7 @@ def root_route(request):
 # https://github.com/Code-Institute-Solutions/drf-api/blob/master/drf_api/urls.py
 @api_view(['POST'])
 def logout_route(request):
+    request.user.auth_token.delete()
     response = Response()
     response.set_cookie(
         key=JWT_AUTH_COOKIE,
