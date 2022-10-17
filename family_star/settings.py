@@ -45,31 +45,31 @@ DEBUG = False
 if 'DEBUG' in os.environ:
     DEBUG = True
 
-# if 'DEV' in os.environ:
-#     ALLOWED_HOSTS = ['localhost']
-# else:
-#     ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
-CORS_ORIGIN_ALLOW_ALL = True
+if 'DEV' in os.environ:
+    ALLOWED_HOSTS = ['localhost']
+else:
+    ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
 
-ALLOWED_HOSTS = ["project5-task-app-back.herokuapp.com",]
+# CORS_ORIGIN_ALLOW_ALL = True
 
-CORS_ALLOWED_ORIGINS = [
-        'https://project5-task-app-front.herokuapp.com',
-    ]
+# ALLOWED_HOSTS = ["project5-task-app-back.herokuapp.com",]
+
+# CORS_ALLOWED_ORIGINS = [
+#         'https://project5-task-app-front.herokuapp.com',
+#     ]
 
 CORS_ALLOW_CREDENTIALS = True
 
 
+if 'CLIENT_ORIGIN' in os.environ:
+    CORS_ALLOWED_ORIGINS = [
+        os.environ.get('CLIENT_ORIGIN')
+    ]
 
-# if 'CLIENT_ORIGIN' in os.environ:
-#     CORS_ALLOWED_ORIGINS = [
-#         os.environ.get('CLIENT_ORIGIN')
-#     ]
-
-# if 'CLIENT_ORIGIN_DEV' in os.environ:
-#     CORS_ALLOWED_ORIGINS = [
-#         os.environ.get('CLIENT_ORIGIN_DEV')
-#     ]
+if 'CLIENT_ORIGIN_DEV' in os.environ:
+    CORS_ALLOWED_ORIGINS = [
+        os.environ.get('CLIENT_ORIGIN_DEV')
+    ]
 
 
 # Application definition
@@ -104,6 +104,11 @@ SITE_ID = 1
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [(
+        'rest_framework.authentication.SessionAuthentication'
+        if 'DEV' in os.environ
+        else 'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
+        
+
         # TODO: Check why SessionAuth does not work. User is not signed out on dj-rest-auth/logout request
         #'rest_framework.authentication.SessionAuthentication'
         # 'rest_framework.permissions.IsAuthenticatedOrReadOnly'
@@ -111,7 +116,7 @@ REST_FRAMEWORK = {
         # if 'DEV' in os.environ
         # else 
         
-        'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
+        #'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
     )]
 
 }
