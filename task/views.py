@@ -118,9 +118,9 @@ class TaskDetail(APIView):
     def get(self, request, pk):
 
         if request.user.is_authenticated:
-            # todo: TEST this
-            task = self.get_object(pk)
-            if self.request.user == task.belongs_to_profile:
+            task = Task.objects.get(id=pk)
+            profile = Profile.objects.get(id=self.request.user.profile.id)
+            if profile == task.belongs_to_profile:
                 serializer = TaskSerializer(task)
                 return Response(serializer.data)
             else:
@@ -128,10 +128,8 @@ class TaskDetail(APIView):
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-
-
     def put(self, request, pk):
-        task = self.get_object(pk)
+        task = Task.objects.get(id=pk)
         serializer = TaskSerializer(task, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -139,7 +137,7 @@ class TaskDetail(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
-        task = self.get_object(pk)
+        task = Task.objects.get(id=pk)        
         task.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
