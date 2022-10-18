@@ -71,8 +71,8 @@ class TaskListView(generics.ListCreateAPIView):
                 ).order_by("end_date")
             if search != "undefined":  # Search in already filtered tasks
                 task = task.filter(
-                    Q(belongs_to_profile=profile) & Q(title__startswith=search)
-                    | Q(description__startswith=search)
+                    Q(belongs_to_profile=profile) & Q(title__icontains=search)
+                    | Q(description__icontains=search)
                 ).order_by("created_on")
         else:  # Get without search or filter. Default value for taskboard tasks (show tasks not assigned that has status todo).
             task = Task.objects.filter(
