@@ -1,5 +1,26 @@
 # Family Star Back-End
 ## Table of contents
+- [Technologies used](#technologies-used)
+    - [Languages](#languages)
+    - [Frameworks and libraries](#frameworks-and-libraries)
+	- [Databases](#databases)
+	- [Storage](#storage)
+    - [Other tools](#other-tools)
+- [Database Scheme](#database-scheme)
+- [Testing](#testing)
+- [Future improvements](#future-improvements)
+    - [Code](#code)
+- [Deployment](#deployment)
+- [Credits](#credits)
+    - [Code](#code)
+    - [Typography](#Typography)
+	- [Icons](#icons)
+	- [Wireframes](#wireframes)
+- [Testing](#testing)
+- [Future Improvements](#future-improvements)
+    - [Code](#code)
+- [Test](#test)
+
 ## Technologies used
 ### Languages
 - [Python (3.8.11)](https://www.python.org/)
@@ -39,3 +60,5 @@ Read more about test and validation [here](/testing/TEST.md)
 
 ### Test
 - [Pytest-django Documentation](https://pytest-django.readthedocs.io/en/latest/) - Used as guide when writing tests
+- [Django REST framework](https://www.django-rest-framework.org/api-guide/testing/) - Used as guidie when writing view tests
+- [Stackoverflow - bytes type to dictionary](https://stackoverflow.com/questions/49184578/how-to-convert-bytes-type-to-dictionary) - Used hwne writing view test 
