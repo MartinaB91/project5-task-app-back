@@ -11,6 +11,7 @@
 - [Future improvements](#future-improvements)
     - [Code](#code)
 - [Deployment](#deployment)
+    -[Local deployment](#local-deployment)
 - [Credits](#credits)
     - [Code](#code)
     - [Typography](#Typography)
@@ -50,7 +51,40 @@ Read more about test and validation [here](/testing/TEST.md)
 ## Future improvements
 ### Code
 - To do maintainability easier the search and filter functionality could be moved to it's own method.
+- To shorten the code generic views could been used. 
+- A more well thought out models/database relations maybe could result in easier views and methods, for instance there is a lot of overriden get, create, patch etc. 
 ## Deployment
+
+### Local deployment
+1. Log into your GitHub account and locate this project.
+2. Create your local workspace and clone the project to your folder by using CLI command “git clone https://github.com/MartinaB91/project5-task-app-back.git”
+3. Install all the dependencies by using CLI command "pip 3 install -r requirements.txt"
+4. Create a "env.py" file and add it to your ".gitignore" file.
+5. In your env.py file, add following environ variables, SECRET_KEY and CLOUDINARY_URL
+, ALLOWED_HOSTS, CLIENT_ORIGIN_DEV, DEV and DEBUG. Please use earlier settings.py file version than last production version since some values are hard coded in production version.  
+6. Create a "Procfile" and add following text "release: python manage.py makemigrations && python manage.py migrate" and "web: gunicorn myblog.wsgi".
+
+### Heroku deployment
+This project is deployed to Heroku. Below the steps taken to deploy is described.
+
+1. Create an Heroku account or sign into your account.
+2. Create a new app by choosing option “Create new app”, located at the centre of dashboard (or if you’re not a new user it’s found when expanding “New” in the top right corner).
+3. Give your app a name, choose a region and click “Create”.
+4. Go to “Resources” in the navbar. Search and add “Heroku Postgres”. Copy the database URL value from Config Vars and add it to your env.py file.
+5. To find your Config Vars, go to “Settings” in the navbar and scroll down to section Config Vars and click “Reveal Config Vars”. Add following Config Vars:
+
+<img src="documentation/readme-images/heroku_config_vars.PNG">
+
+6. Scroll to section Buildpacks, click “Add Bulidpack”, select "python" and click “Save changes”.
+
+7. Go to “Deploy” in the navbar and select “GitHub” in section Deployment method. Click “Connect to GitHub” in section below.
+8. In section Connect to Github search for your repository, then click “Connect” next to your repository name.
+9. Go back to your CLI. Make sure all changes are committed and pushed. Login in to Heroku by using CLI command “heroku login -i”
+10. Connect you repository to Heroku app by using CLI command “git remote add Heroku git@heroku.com:app_name.git”
+11. Then you can deploy your app by using CLI command “git push heroku main”.
+
+Before deployment to production be sure to remember to set “Config Vars” DEBUG = False and remove DISABLE_COLLECTSTATIC.
+
 ## Credits
 ### Code
 - [Django REST framework documentation](https://www.django-rest-framework.org/) - Used throughout the project.
