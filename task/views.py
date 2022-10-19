@@ -1,18 +1,14 @@
-from django.shortcuts import render
-from rest_framework import generics, filters, status, permissions
+from rest_framework import generics, filters, status
 from rest_framework.views import APIView
 from rest_framework.mixins import UpdateModelMixin
-from .models import Task
-from profiles.models import Profile
-from categories.models import Category
-from .serializers import TaskSerializer
 from rest_framework.response import Response
 from django.http import Http404
+from profiles.models import Profile
+from categories.models import Category
+from .models import Task
+from .serializers import TaskSerializer
 from family_star.permissions import IsOwner
-from family_member.models import FamilyMember
-from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
-from family_star.permissions import IsOwner
 
 
 class TaskListView(generics.ListCreateAPIView):
@@ -34,17 +30,17 @@ class TaskListView(generics.ListCreateAPIView):
 
     def get(self, request):
         """
-        Get all tasks that belongs to a profile or get the results of from search query or filtering.
+        Get all tasks that belongs to a profile or
+        get the results of from search query or filtering.
         """
         profile = Profile.objects.get(user=request.user)
-        family_members = FamilyMember.objects.filter(belongs_to_profile=profile)
         if (
             "&search" in request.get_full_path()
             and "?filter" in request.get_full_path()
         ):  # Get searching or filtering
             search = self.request.query_params.get("search")
-            filter = self.request.query_params.get("filter")
-            if filter == "my_tasks":
+            filter_tasks = self.request.query_params.get("filter")
+            if filter_tasks == "my_tasks":
                 current_family_member_id = self.request.query_params.get(
                     "family_member_id"
                 )
@@ -53,16 +49,19 @@ class TaskListView(generics.ListCreateAPIView):
                     assigned_id=current_family_member_id,
                     status="Todo",
                 ).order_by("end_date")
-            elif filter == "assigned":
+            elif filter_tasks == "assigned":
                 task = Task.objects.filter(
-                    ~Q(assigned=None), belongs_to_profile=profile, status="Todo"
+                    ~Q(assigned=None),
+                    belongs_to_profile=profile,
+                    status="Todo"
                 ).order_by("end_date")
-            elif filter == "done":
+            elif filter_tasks == "done":
                 task = Task.objects.filter(
                     belongs_to_profile=profile, status="Done"
                 ).order_by("-end_date")
-            elif filter == "all_tasks":
-                task = Task.objects.filter(belongs_to_profile=profile).order_by(
+            elif filter_tasks == "all_tasks":
+                task = Task.objects.filter(
+                    belongs_to_profile=profile).order_by(
                     "-end_date"
                 )
             else:
@@ -74,15 +73,21 @@ class TaskListView(generics.ListCreateAPIView):
                     Q(belongs_to_profile=profile) & Q(title__icontains=search)
                     | Q(description__icontains=search)
                 ).order_by("created_on")
-        else:  # Get without search or filter. Default value for taskboard tasks (show tasks not assigned that has status todo).
+        else:  # Get without search or filter.
+            # Default value for taskboard tasks
+            # (show tasks not assigned that has status todo).
             task = Task.objects.filter(
                 Q(assigned=None), belongs_to_profile=profile, status="Todo"
             ).order_by("end_date")
-        serializer = TaskSerializer(task, many=True, context={"request": request})
+        serializer = TaskSerializer(
+            task, many=True, context={"request": request}
+            )
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = TaskSerializer(data=request.data, context={"request": request})
+        serializer = TaskSerializer(
+            data=request.data, context={"request": request}
+            )
         if serializer.is_valid():
             validated_data = serializer.validated_data
             profile = Profile.objects.get(user=request.user)
@@ -90,7 +95,10 @@ class TaskListView(generics.ListCreateAPIView):
                 name=validated_data.get("category")["name"]
             )
 
-            serializer.save(belongs_to_profile=profile, category=request_category)
+            serializer.save(
+                belongs_to_profile=profile,
+                category=request_category
+                )
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -112,8 +120,8 @@ class TaskDetail(APIView):
                 return task
             else:
                 return Response(status=status.HTTP_401_UNAUTHORIZED)
-        except Task.DoesNotExist:
-            raise Http404
+        except Task.DoesNotExist as task_does_not_exist:
+            raise Http404 from task_does_not_exist
 
     def get(self, request, pk):
 
@@ -137,7 +145,7 @@ class TaskDetail(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
-        task = Task.objects.get(id=pk)        
+        task = Task.objects.get(id=pk)
         task.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -151,8 +159,8 @@ class AssignTask(APIView):
             task = Task.objects.get(pk=pk)
             self.check_object_permissions(self.request, task)
             return task
-        except Task.DoesNotExist:
-            raise Http404
+        except Task.DoesNotExist as task_does_not_exist:
+            raise Http404 from task_does_not_exist
 
     def patch(self, request, pk):
         task = self.get_object(pk)
@@ -172,8 +180,8 @@ class TaskDone(APIView, UpdateModelMixin):
             task = Task.objects.get(pk=pk)
             self.check_object_permissions(self.request, task)
             return task
-        except Task.DoesNotExist:
-            raise Http404
+        except Task.DoesNotExist as task_does_not_exist:
+            raise Http404 from task_does_not_exist
 
     def patch(self, request, pk):
         task = self.get_object(pk)
