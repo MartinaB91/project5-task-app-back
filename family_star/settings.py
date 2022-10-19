@@ -45,6 +45,7 @@ ALLOWED_HOSTS = ["project5-task-app-back.herokuapp.com",]
 CORS_ALLOWED_ORIGINS = [
         'https://project5-task-app-front.herokuapp.com',
     ]
+CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
 
