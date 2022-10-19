@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from categories.models import Category
 from family_member.models import FamilyMember
+from rest_framework import status
 
 from .models import Task
 
@@ -28,8 +29,7 @@ class TaskSerializer(serializers.ModelSerializer):
         ):
             # Someone needs to be assigned to task make "Done"
             if task.assigned is None:
-                # TODO: Return a http status code
-                print("No one is assigned")
+                return status.HTTP_400_BAD_REQUEST
             else:
                 assigned_family_member = FamilyMember.objects.get(
                     id=task.assigned.id
@@ -67,7 +67,7 @@ class TaskSerializer(serializers.ModelSerializer):
                     )
                     if assigned_family_member.ongoing_tasks < 0:
                         assigned_family_member.ongoing_tasks = 0
-                    
+
                 assigned_family_member.save()
                 task.save()
 
@@ -76,23 +76,23 @@ class TaskSerializer(serializers.ModelSerializer):
         elif (
             validated_data.get("title") is None and validated_data.get("status") is None
         ):
-            familyMember = FamilyMember.objects.get(
+            family_member = FamilyMember.objects.get(
                 name=validated_data.get("assigned")
                 )
             # If a family member is assigned. Remove assigne
             # and subtract ongoing tasks by 1
             if task.assigned is not None:
                 task.assigned = None
-                familyMember.ongoing_tasks = familyMember.ongoing_tasks - 1
+                family_member.ongoing_tasks = family_member.ongoing_tasks - 1
 
-                if familyMember.ongoing_tasks < 0:
-                    familyMember.ongoing_tasks = 0
+                if family_member.ongoing_tasks < 0:
+                    family_member.ongoing_tasks = 0
             # Assign current family member on task and add ongoing tasks by 1
             else:
                 task.assigned = validated_data.get("assigned")
-                familyMember.ongoing_tasks = familyMember.ongoing_tasks + 1
+                family_member.ongoing_tasks = family_member.ongoing_tasks + 1
 
-            familyMember.save()
+            family_member.save()
 
         else:  # Is update in Form
             task.title = validated_data.get("title")
@@ -103,12 +103,12 @@ class TaskSerializer(serializers.ModelSerializer):
             task.description = validated_data.get("description")
             task.star_points = validated_data.get("star_points")
             if validated_data.get("assigned") is not None:
-                familyMember = FamilyMember.objects.get(
+                family_member = FamilyMember.objects.get(
                     name=validated_data.get("assigned")
                 )
-                task.assigned = familyMember
-                familyMember.ongoing_tasks = familyMember.ongoing_tasks + 1
-                familyMember.save()
+                task.assigned = family_member
+                family_member.ongoing_tasks = family_member.ongoing_tasks + 1
+                family_member.save()
 
         task.save()
         return task
