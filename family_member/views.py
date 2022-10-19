@@ -49,8 +49,8 @@ class FamilyMemberDetailView(APIView):
             family_member = FamilyMember.objects.get(pk=pk)
             self.check_object_permissions(self.request, family_member)
             return family_member
-        except FamilyMember.DoesNotExist:
-            raise Http404
+        except FamilyMember.DoesNotExist as family_member_does_not_exist:
+            raise Http404 from family_member_does_not_exist
 
     def get(self, request, pk):
         family_member = self.get_object(pk)
