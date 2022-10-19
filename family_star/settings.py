@@ -24,12 +24,11 @@ CLOUDINARY_STORAGE = {
 MEDIA_URL = '/media/'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# TODO: Remove before system testing to prevent browsable api in development
-# REST_FRAMEWORK = {
-#     'DEFAULT_RENDERER_CLASSES': (
-#         'rest_framework.renderers.JSONRenderer',
-#     )
-# }
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
+}
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,24 +36,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-if 'DEBUG' in os.environ:
-    DEBUG = True
-
-CORS_ORIGIN_ALLOW_ALL = True
 
 ALLOWED_HOSTS = ["project5-task-app-back.herokuapp.com",]
 
 CORS_ALLOWED_ORIGINS = [
         'https://project5-task-app-front.herokuapp.com',
     ]
-
-CORS_ALLOW_CREDENTIALS = True
-
 
 # Application definition
 
@@ -88,18 +78,9 @@ SITE_ID = 1
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        # TODO: Check why SessionAuth does not work. User is not signed out on dj-rest-auth/logout request
-        #'rest_framework.authentication.SessionAuthentication'
-        # 'rest_framework.permissions.IsAuthenticatedOrReadOnly'
-        # 'rest_framework.authentication.TokenAuthentication'
-        # if 'DEV' in os.environ
-        # else 
-        
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
     ],
 }
-
-
 
 REST_USE_JWT = True
 JWT_AUTH_SECURE = True
