@@ -12,6 +12,7 @@
     - [Code](#code)
 - [Deployment](#deployment)
     -[Local deployment](#local-deployment)
+    -[Heroku deployment](#heroku-deployment)
 - [Credits](#credits)
     - [Code](#code)
     - [Typography](#Typography)
@@ -42,6 +43,7 @@
 - [Graphviz](https://dreampuf.github.io/GraphvizOnline/) - Used for generating pretty database schema from dot-file
 - [Heroku](https://id.heroku.com/login) - Used to deploy app
 - [Pyscopg2 (2.9.3)](https://pypi.org/project/psycopg2/) - Used for connecting PostgreSQL to Python 
+
 ### Database Scheme
 <img src="documentation/readme-images/db_scheme.svg">
 
