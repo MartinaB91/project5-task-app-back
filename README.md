@@ -46,7 +46,7 @@
 <img src="documentation/readme-images/db_scheme.svg">
 
 ## Testing
-Read more about test and validation [here](/testing/TEST.md)
+Read more about testing and validation [here](/testing/TEST.md)
 
 ## Future improvements
 ### Code
