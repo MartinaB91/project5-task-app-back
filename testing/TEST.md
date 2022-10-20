@@ -8,7 +8,7 @@ Functionality has been tested by the same test cases as the front-end project an
 
 ### Automatic tests
 
-At first an atempt to work testdriven (TDD) was made and some test was written early and used during the development. However as the work progressed the automatic test cases were not prioritized enough. If more test had been written some common bugs could have been prevented when changes in back-end affected format of response. ¨
+At first an atempt to work testdriven (TDD) was made and some test was written early and used during the development. However as the work progressed the automatic test cases were not prioritized enough. If more test had been written some common bugs could have been prevented when changes in back-end affected format of response. 
 
 The automatic test cases were never seen as something that should validate or verify end functionality but be helpful during the development. 
 
